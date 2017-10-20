@@ -11,7 +11,7 @@ directiveModule.directive('dmDropdownStaticInclude', ['$compile', function($comp
 	};
 }]);
 
-directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$compile', '$parse', function($filter, $document, $compile, $parse) {
+directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$timeout', function($filter, $document, $timeout) {
 	return {
 		restrict: 'AE',
 		scope: {
@@ -189,9 +189,11 @@ directiveModule.directive('ngDropdownMultiselect', ['$filter', '$document', '$co
 				$scope.externalEvents.onSelectionChanged();
 			};
 
-			angular.extend($scope.settings, $scope.extraSettings || []);
-			angular.extend($scope.externalEvents, $scope.events || []);
-			angular.extend($scope.texts, $scope.translationTexts);
+			$timeout(function () {
+				angular.extend($scope.settings, $scope.extraSettings || []);
+				angular.extend($scope.externalEvents, $scope.events || []);
+				angular.extend($scope.texts, $scope.translationTexts);
+			});
 
 			$scope.singleSelection = $scope.settings.selectionLimit === 1;
 
